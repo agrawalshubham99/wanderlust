@@ -8,6 +8,7 @@ const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
 const wrapAsync = require("./utils/wrapAsync");
 const ExpressError = require("./utils/ExpressError");
+const { listingSchema } = require("./schema.js");
 
 // const MONGO_URL =
 //   "mongodb+srv://sa280337:agrawal1234@cluster0.f7cw3.mongodb.net/wanderlust?retryWrites=true&w=majority&appName=Cluster0";
@@ -40,6 +41,16 @@ app.get("/", (req, res) => {
   res.send("Hello World");
 });
 
+const validateListing = (req, res, next) => {
+  let { error } = listingSchema.validate(req.body);
+  if (error) {
+    let errMsg = error.details.map((el) => el.message).join(",");
+    throw new ExpressError(400, errMsg);
+  } else {
+    next();
+  }
+};
+
 //index route
 app.get(
   "/listings",
@@ -70,6 +81,7 @@ app.get(
 //create route
 app.post(
   "/listings",
+  validateListing,
   wrapAsync(async (req, res, next) => {
     const { listing } = req.body;
     const newListing = new Listing({
@@ -97,6 +109,7 @@ app.get(
 //update route
 app.put(
   "/listings/:id",
+  validateListing,
   wrapAsync(async (req, res) => {
     const { id } = req.params;
     const listing = await Listing.findByIdAndUpdate(id, {
