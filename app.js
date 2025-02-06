@@ -9,6 +9,7 @@ const ejsMate = require("ejs-mate");
 const wrapAsync = require("./utils/wrapAsync");
 const ExpressError = require("./utils/ExpressError");
 const { listingSchema } = require("./schema.js");
+const Review = require("./models/review");
 
 // const MONGO_URL =
 //   "mongodb+srv://sa280337:agrawal1234@cluster0.f7cw3.mongodb.net/wanderlust?retryWrites=true&w=majority&appName=Cluster0";
@@ -128,6 +129,20 @@ app.delete(
     res.redirect("/listings");
   })
 );
+
+//Reviews
+//Post route for reviews
+app.post("/listings/:id/reviews", async (req, res) => {
+  let listing = await Listing.findById(req.params.id);
+  let newReview = new Review(req.body.review);
+
+  listing.reviews.push(newReview);
+
+  await newReview.save();
+  await listing.save();
+
+  res.redirect(`/listings/${listing._id}`);
+});
 
 // app.get("/listings", async (req, res) => {
 //   let sampleListing = new Listing({
