@@ -57,4 +57,22 @@
       <button class="btn btn-outline-dark" type="submit">Submit</button>
     </form>
   </div>
+
+  <hr />
+
+  <h4>All Reviews</h4>
+  <ul>
+    <% for(let review of listing.reviews) { %>
+    <li>
+      <b>Rating: </b> <%= review.rating %> <br />
+      <b>Comment: </b> <%= review.comment %> <br />
+    </li>
+    <form
+      method="POST"
+      action="/listings/<%=listing._id%>/reviews/<%=review._id%>?_method=DELETE"
+    >
+      <button class="btn btm-sm btn-dark delete-btn">Delete</button>
+    </form>
+    <% } %>
+  </ul>
 </body>
