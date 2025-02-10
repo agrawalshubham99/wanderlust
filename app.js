@@ -34,7 +34,7 @@ app.engine("ejs", ejsMate);
 app.use(express.static(path.join(__dirname, "/public")));
 
 app.get("/", (req, res) => {
-  res.send("Hello World");
+  res.send("Welcome to wanderlust");
 });
 
 app.use("/listings", listings);
