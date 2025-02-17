@@ -38,6 +38,10 @@ router.get(
   wrapAsync(async (req, res) => {
     const { id } = req.params;
     const listing = await Listing.findById(id).populate("reviews");
+    if (!listing) {
+      req.flash("error", "Cannot find that listing");
+      return res.redirect("/listings");
+    }
     res.render("listings/show.ejs", { listing });
   })
 );
@@ -56,6 +60,7 @@ router.post(
     });
 
     await newListing.save();
+    req.flash("success", "Successfully made a new listing");
     res.redirect("/listings");
   })
 );
@@ -79,6 +84,7 @@ router.put(
     const listing = await Listing.findByIdAndUpdate(id, {
       ...req.body.listing,
     });
+    req.flash("success", "Listing Updated");
     res.redirect(`/listings/${listing._id}`);
   })
 );
@@ -89,6 +95,7 @@ router.delete(
   wrapAsync(async (req, res) => {
     const { id } = req.params;
     await Listing.findByIdAndDelete(id);
+    req.flash("success", "Listing Deleted");
     res.redirect("/listings");
   })
 );
