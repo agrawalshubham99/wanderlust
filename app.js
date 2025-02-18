@@ -11,10 +11,10 @@ const flash = require("connect-flash");
 const listings = require("./routes/listing.js");
 const reviews = require("./routes/review.js");
 
-// const MONGO_URL =
-//   "mongodb+srv://sa280337:agrawal1234@cluster0.f7cw3.mongodb.net/wanderlust?retryWrites=true&w=majority&appName=Cluster0";
+const MONGO_URL =
+  "mongodb+srv://sa280337:agrawal1234@cluster0.f7cw3.mongodb.net/wanderlust?retryWrites=true&w=majority&appName=Cluster0";
 
-const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
+// const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
 
 main()
   .then(() => {
